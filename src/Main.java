@@ -10,5 +10,13 @@ void main() throws IOException, InvalidKeySpecException {
     RobotRepository robotRepository = new RobotRepositoryImpl();
     RobotService robotService = new RobotServiceImpl(robotRepository);
     Path path = Path.of("src","resource", "move.txt");
-    robotService.ChangePosition(path,"A");
+    try {
+        robotService.ChangePosition(path,"A");
+    } catch (IOException e) {
+        System.out.println(e.getMessage());
+    } catch (InvalidKeySpecException e) {
+        System.out.println(e.getMessage());
+    } catch (Exception e){
+        System.out.println(e.getMessage());
+    }
 }

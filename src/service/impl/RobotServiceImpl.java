@@ -19,24 +19,32 @@ public class RobotServiceImpl implements RobotService {
     @Override
     public void ChangePosition(Path path, String commit) throws IOException, InvalidKeySpecException {
         //validasi commit
-        String dataRobot1 = robotRepository.getNowPosition(path);
-        String[] parts = dataRobot1.split(",");
         String[] initiateDirection = {"NORTH","EAST","SOUTH","WEST"};
-        String getDirection = parts[0];
-        System.out.println("Arah robot: "+getDirection);
-        int getX = Integer.parseInt(parts[1]);
-        System.out.println("Arah X: "+getX);
-        int getY = Integer.parseInt(parts[2]);
-        System.out.println("Arah Y: "+getY);
+        String getDirection = "NORTH";
+        int getX = 0;
+        int getY = 0;
+        Robot dataRobot1 = robotRepository.getNowPosition(path);
+
+            getDirection = dataRobot1.getDirection();
+            System.out.println("Arah robot: "+getDirection);
+
+            getX = dataRobot1.getX();
+            System.out.println("Arah X: "+getX);
+
+            getY = dataRobot1.getY();
+            System.out.println("Arah Y: "+getY);
+
+
         switch (commit){
             case "A":
-                if (getDirection == "NORTH"){
+                if (getDirection.equals("NORTH")){
                     getY += 1;
-                } else if (getDirection == "SOUTH") {
+                } else if (getDirection.equals("SOUTH")) {
                     getY -= 1;
-                } else if (getDirection == "EAST") {
+                } else if (getDirection.equals("EAST")) {
                     getX += 1;
-                } else if (getDirection == "WEST") {
+                    System.out.println(getX);
+                } else if (getDirection.equals("WEST")) {
                     getX -= 1;
                 }
                 break;
@@ -57,8 +65,9 @@ public class RobotServiceImpl implements RobotService {
                     if (Objects.equals(getDirection, initiateDirection[i])){
                         if (i == 0){
                             getDirection = initiateDirection[initiateDirection.length-1];
+                        } else {
+                            getDirection = initiateDirection[i-1];
                         }
-                        getDirection = initiateDirection[i-1];
                         break;
                     }
                 }
@@ -66,7 +75,7 @@ public class RobotServiceImpl implements RobotService {
             default:
                 throw new InvalidKeySpecException("Input Salah!(R, L, A)");
         }
-        System.out.println("Get X"+getX);
+        System.out.println("Get X:"+getX);
         Robot newRobot = new Robot(getDirection,getX,getY);
         robotRepository.changeDirection(path, commit, newRobot);
     }

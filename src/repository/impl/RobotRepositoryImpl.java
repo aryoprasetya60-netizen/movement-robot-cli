@@ -29,8 +29,10 @@ public class RobotRepositoryImpl implements RobotRepository {
     }
 
     @Override
-    public String getNowPosition(Path path) throws IOException {
-        String nowPosition = null;
+    public Robot getNowPosition(Path path) throws IOException {
+        String direction = "NORTH";
+        int getX = 0;
+        int getY = 0;
         if (path != null && Files.exists(path)) {
             List<String> commitList = Files.readAllLines(path);
             int lastLine = commitList.size() - 1;
@@ -39,14 +41,17 @@ public class RobotRepositoryImpl implements RobotRepository {
                     initialCoordinate.indexOf("{")+1,
                     initialCoordinate.indexOf("}")
             );
-            String[] parts = data.split(", ");
+            String[] parts = data.trim().split(", ");
             if (parts[0].trim() != "" && parts[1].trim() != "") {
-                nowPosition = parts[0].trim() + "," + parts[1].trim() + "," + parts[2].trim();
+                direction = parts[0].trim();
+                getX = Integer.parseInt(parts[1].trim());
+                getY = Integer.parseInt(parts[2].trim());
             }
         }
         else {
             throw new IOException();
         }
+        Robot nowPosition = new Robot(direction,getX,getY);
         return nowPosition;
     }
 }

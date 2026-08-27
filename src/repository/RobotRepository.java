@@ -8,5 +8,5 @@ import java.nio.file.Path;
 
 public interface RobotRepository {
     void changeDirection(Path path, String commit, Robot robot) throws IOException;
-    String getNowPosition(Path path) throws IOException;
+    Robot getNowPosition(Path path) throws IOException;
 }
