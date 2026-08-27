@@ -10,4 +10,5 @@ public interface RobotService {
     void changePosition(Path path, String commit) throws IOException, InvalidKeySpecException;
     void checkPosition(Path path) throws IOException;
     void checkAllHistory(Path path) throws IOException;
+    void resetRobot(Path path) throws IOException;
 }

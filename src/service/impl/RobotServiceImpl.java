@@ -3,10 +3,10 @@ package service.impl;
 import entity.Robot;
 import repository.RobotRepository;
 import service.RobotService;
+import utils.exception.NullPointerException;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
@@ -22,6 +22,9 @@ public class RobotServiceImpl implements RobotService {
     @Override
     public void changePosition(Path path, String commit) throws IOException, InvalidKeySpecException {
         //validasi commit
+        if (commit.trim().isEmpty()){
+            throw new NullPointerException("Commit Tidak Boleh Kosong!");
+        }
         String[] initiateDirection = {"NORTH","EAST","SOUTH","WEST"};
         String getDirection;
         int getX;
@@ -122,6 +125,16 @@ public class RobotServiceImpl implements RobotService {
                 no+=1;
             }
             System.out.println("==================================================================================");
+        }
+    }
+
+    @Override
+    public void resetRobot(Path path) throws IOException {
+        if (path!=null){
+            robotRepository.resetRobot(path);
+            System.out.println("========= ROBOT BERHASIL DIRESET =========");
+        } else {
+            throw new NullPointerException("Path Tidak Boleh Kosong");
         }
     }
 }

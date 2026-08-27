@@ -106,6 +106,15 @@ public class RobotRepositoryImpl implements RobotRepository {
         return nowPosition;
     }
 
+    @Override
+    public void resetRobot(Path path) throws IOException {
+        if (Files.exists(path)){
+            Files.delete(path);
+        } else {
+            throw new IOException("Files doesn't exist");
+        }
+    }
+
     public void createDirectory(Path path) throws IOException{
         String direction = "NORTH";
         int getX = 0;

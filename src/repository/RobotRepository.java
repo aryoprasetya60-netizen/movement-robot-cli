@@ -12,4 +12,5 @@ public interface RobotRepository {
     List<Robot> getAllHistory(Path path) throws IOException;
     List<String> getAllCommand(Path path) throws IOException;
     Robot getNowPosition(Path path) throws IOException;
+    void resetRobot(Path path) throws IOException;
 }

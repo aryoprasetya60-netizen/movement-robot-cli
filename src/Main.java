@@ -3,6 +3,7 @@ import repository.RobotRepository;
 import repository.impl.RobotRepositoryImpl;
 import service.RobotService;
 import service.impl.RobotServiceImpl;
+import utils.exception.NullPointerException;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -19,7 +20,8 @@ void main() throws IOException, InvalidKeySpecException {
         System.out.println("===========================================");
         System.out.println("1. COMMIT MOVEMENT                         ");
         System.out.println("2. CHECK CURRENT POSITION                  ");
-        System.out.println("2. CHECK SEMUA COMMAND                     ");
+        System.out.println("3. CHECK SEMUA COMMAND                     ");
+        System.out.println("4. RESET ROBOT                             ");
         System.out.println("0. Keluar                                  ");
         System.out.println("===========================================");
 
@@ -37,6 +39,10 @@ void main() throws IOException, InvalidKeySpecException {
                 break;
             case "3":
                 checkAllCommand(robotService, path);
+
+                break;
+            case "4":
+                resetRobot(robotService, path);
 
                 break;
             case "0":
@@ -65,13 +71,15 @@ public static void commitMovement(RobotRepository robotRepository, RobotService 
     System.out.print("A = Maju 1 Langkah \n");
     System.out.print("L = Hadap Kiri \n");
     System.out.print("R = Hadap Kanan \n");
-    System.out.print("0 = Batal: \n");
+    System.out.print("0 = Batal \n");
     System.out.print("Masukkan Commands: ");
     String command = scanner.nextLine();
     if (command!="0") {
         try {
             robotService.changePosition(path, command.toUpperCase());
-        } catch (IOException e) {
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (InvalidKeySpecException e) {
             System.out.println(e.getMessage());
@@ -100,6 +108,20 @@ public static void checkAllCommand(RobotService robotService, Path path){
     try {
         robotService.checkAllHistory(path);
     } catch (IOException e) {
+        System.out.println(e.getMessage());
+    } catch (Exception e){
+        System.out.println(e.getMessage());
+    }
+}
+public static void resetRobot(RobotService robotService, Path path){
+    System.out.println("  =======================================");
+    System.out.println("                RESET ROBOT              ");
+    System.out.println("  =======================================");
+    try {
+        robotService.resetRobot(path);
+    } catch (NullPointerException e) {
+        System.out.println(e.getMessage());
+    }catch (IOException e) {
         System.out.println(e.getMessage());
     } catch (Exception e){
         System.out.println(e.getMessage());

@@ -1,12 +1,3 @@
 Commit -> {Arah, X, Y}
 INITIATE -> {NORTH, 0, 0}
-A -> {NORTH, 0, 1}
-L -> {WEST, 0, 1}
-L -> {SOUTH, 0, 1}
-A -> {SOUTH, 0, 0}
-A -> {SOUTH, 0, -1}
-A -> {SOUTH, 0, -2}
-L -> {EAST, 0, -2}
-A -> {EAST, 1, -2}
-A -> {EAST, 2, -2}
-A -> {EAST, 3, -2}
+L -> {WEST, 0, 0}
