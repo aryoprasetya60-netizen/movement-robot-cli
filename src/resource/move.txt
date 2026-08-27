@@ -9,3 +9,4 @@ A -> {SOUTH, 0, -2}
 L -> {EAST, 0, -2}
 A -> {EAST, 1, -2}
 A -> {EAST, 2, -2}
+A -> {EAST, 3, -2}

@@ -108,17 +108,20 @@ public class RobotServiceImpl implements RobotService {
             return;
         }
         if (path!=null){
-            System.out.println("=============================================================================");
-            System.out.println("||\tCommand\t\t||\tArah Robot \t||\t Koordinat X \t||\t Koordinat Y \t||");
-            System.out.println("=============================================================================");
+            int no=1;
+            System.out.println("Total Commands: "+commands.size());
+            System.out.println("==================================================================================");
+            System.out.println("||NO\t||\tCommand\t\t||\tArah Robot \t||\t Koordinat X \t||\t Koordinat Y \t||");
+            System.out.println("==================================================================================");
             for (int i=0;i<commands.size();i++){
                 if (i==0){
-                    System.out.println("||\t"+commands.get(i)+"\t||\t"+robots.get(i).getDirection()+"\t\t||\t\t"+robots.get(i).getX()+"\t\t\t||\t\t"+robots.get(i).getY()+"\t\t\t||");
+                    System.out.println("|| "+no+"  \t||\t"+commands.get(i)+"\t||\t"+robots.get(i).getDirection()+"\t\t||\t\t"+robots.get(i).getX()+"\t\t\t||\t\t"+robots.get(i).getY()+"\t\t\t||");
                 } else {
-                    System.out.println("||\t"+commands.get(i)+"\t\t\t||\t"+robots.get(i).getDirection()+"\t\t||\t\t"+robots.get(i).getX()+"\t\t\t||\t\t"+robots.get(i).getY()+"\t\t\t||");
+                    System.out.println("|| "+no+"  \t||\t"+commands.get(i)+"\t\t\t||\t"+robots.get(i).getDirection()+"\t\t||\t\t"+robots.get(i).getX()+"\t\t\t||\t\t"+robots.get(i).getY()+"\t\t\t||");
                 }
+                no+=1;
             }
-            System.out.println("==========================================================");
+            System.out.println("==================================================================================");
         }
     }
 }

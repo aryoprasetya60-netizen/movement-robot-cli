@@ -67,7 +67,6 @@ public class RobotRepositoryImpl implements RobotRepository {
                 String[] parts = getCoordinate.split("-");
                 if (parts[0].trim()!="" && parts[1].trim()!="") {
                     commands.add(parts[0].trim());
-                    System.out.println(parts[0]);
                 }
 
             }
