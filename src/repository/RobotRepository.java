@@ -8,5 +8,5 @@ import java.security.spec.InvalidKeySpecException;
 
 public interface RobotRepository {
     void changeDirection(Path path, String commit, Robot robot) throws IOException;
-    String getNowPosition(Path path);
+    String setNowPosition(Path path, Robot robot) throws IOException;
 }

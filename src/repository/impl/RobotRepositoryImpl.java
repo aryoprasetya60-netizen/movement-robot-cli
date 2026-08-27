@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RobotRepositoryImpl implements RobotRepository {
-    String nowCoordinate;
+
     @Override
     public void changeDirection(Path path, String commit, Robot robot) throws IOException {
         if (!Files.exists(path)) {
@@ -22,20 +22,28 @@ public class RobotRepositoryImpl implements RobotRepository {
                             robot.getX(),
                             robot.getY());
             Files.writeString(path, initialCoordinate + System.lineSeparator(), StandardOpenOption.CREATE);
-        } else {
-            String changeCoordinate = String.format("%s -> {%s, %d, %d}",
-                    commit,
-                    robot.getDirection(),
-                    robot.getX(),
-                    robot.getY());
-            Files.writeString(path, changeCoordinate + System.lineSeparator(), StandardOpenOption.APPEND);
         }
-        nowCoordinate = robot.getDirection()+","+robot.getX()+","+robot.getY();
-        getNowPosition(path);
+        String changeCoordinate = String.format("%s -> {%s, %d, %d}",
+                commit,
+                robot.getDirection(),
+                robot.getX(),
+                robot.getY());
+        Files.writeString(path, changeCoordinate + System.lineSeparator(), StandardOpenOption.APPEND);
+
+        setNowPosition(path, robot);
     }
 
     @Override
-    public String getNowPosition(Path path) {
-        return nowCoordinate;
+    public String setNowPosition(Path path, Robot robot) throws IOException {
+        String nowPosition;
+        List<String> commitList = Files.readAllLines(path);
+        int lastLine = commitList.size()-1;
+        String[] parts = commitList.get(lastLine).split(",");
+        if (parts[0].trim()!="" && parts[1].trim()!=""){
+            nowPosition = parts[0].trim()+","+parts[1].trim()+","+parts[2].trim();
+        } else {
+            return null;
+        }
+        return nowPosition;
     }
 }
