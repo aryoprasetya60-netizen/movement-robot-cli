@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RobotRepositoryImpl implements RobotRepository {
@@ -14,10 +15,7 @@ public class RobotRepositoryImpl implements RobotRepository {
     @Override
     public void changeDirection(Path path, String commit, Robot robot) throws IOException {
         if (!Files.exists(path)) {
-            Files.createFile(path);
-            String initialCoordinate =
-                    String.format("Commit -> {Arah, X, Y}");
-            Files.writeString(path, initialCoordinate + System.lineSeparator(), StandardOpenOption.CREATE);
+            createDirectory(path);
         }
         String changeCoordinate = String.format("%s -> {%s, %d, %d}",
                 commit,
@@ -28,15 +26,64 @@ public class RobotRepositoryImpl implements RobotRepository {
     }
 
     @Override
+    public List<Robot> getAllHistory(Path path) throws IOException {
+        List<Robot> robots = new ArrayList<>();
+
+        if (path != null && Files.exists(path)) {
+            List<String> historyList = Files.readAllLines(path);
+
+            for (int i = 1; i < historyList.size(); i++) {
+                String getCoordinate = historyList.get(i);
+                String data = getCoordinate.substring(
+                        getCoordinate.indexOf("{")+1,
+                        getCoordinate.indexOf("}")
+                );
+                String[] parts = data.split(",");
+                if (parts[0].trim()!="" && parts[1].trim()!="") {
+                    robots.add(
+                            new Robot(
+                                parts[0].trim(),
+                                Integer.parseInt(parts[1].trim()),
+                                Integer.parseInt(parts[2].trim())
+                            )
+                    );
+                }
+
+            }
+        }else{
+            throw new IOException();
+        }
+        return robots;
+    }
+
+    public List<String> getAllCommand(Path path) throws IOException {
+        List<String> commands = new ArrayList<>();
+
+        if (path != null && Files.exists(path)) {
+            List<String> commandList = Files.readAllLines(path);
+
+            for (int i = 1; i < commandList.size(); i++) {
+                String getCoordinate = commandList.get(i);
+                String[] parts = getCoordinate.split("-");
+                if (parts[0].trim()!="" && parts[1].trim()!="") {
+                    commands.add(parts[0].trim());
+                    System.out.println(parts[0]);
+                }
+
+            }
+        }else{
+            throw new IOException();
+        }
+        return commands;
+    }
+
+    @Override
     public Robot getNowPosition(Path path) throws IOException {
         String direction = "NORTH";
         int getX = 0;
         int getY = 0;
         if (!Files.exists(path)) {
-            Files.createFile(path);
-            String initialCoordinate =
-                    String.format("INITIATE -> {%s, %d, %d}",direction,getX,getY);
-            Files.writeString(path, initialCoordinate + System.lineSeparator(), StandardOpenOption.CREATE);
+            createDirectory(path);
         }
 
         List<String> commitList = Files.readAllLines(path);
@@ -47,7 +94,7 @@ public class RobotRepositoryImpl implements RobotRepository {
                     initialCoordinate.indexOf("{")+1,
                     initialCoordinate.indexOf("}")
             );
-            String[] parts = data.trim().split(", ");
+            String[] parts = data.trim().split(",");
             if (parts[0].trim() != "" && parts[1].trim() != "") {
                 direction = parts[0].trim();
                 getX = Integer.parseInt(parts[1].trim());
@@ -58,5 +105,18 @@ public class RobotRepositoryImpl implements RobotRepository {
         }
         Robot nowPosition = new Robot(direction,getX,getY);
         return nowPosition;
+    }
+
+    public void createDirectory(Path path) throws IOException{
+        String direction = "NORTH";
+        int getX = 0;
+        int getY = 0;
+        Files.createFile(path);
+        String headerCoordinate =
+                String.format("Commit -> {Arah, X, Y}");
+        Files.writeString(path, headerCoordinate + System.lineSeparator(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        String initialCoordinate =
+                String.format("INITIATE -> {%s, %d, %d}",direction,getX,getY);
+        Files.writeString(path, initialCoordinate + System.lineSeparator() , StandardOpenOption.APPEND);
     }
 }

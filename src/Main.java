@@ -19,6 +19,7 @@ void main() throws IOException, InvalidKeySpecException {
         System.out.println("===========================================");
         System.out.println("1. COMMIT MOVEMENT                         ");
         System.out.println("2. CHECK CURRENT POSITION                  ");
+        System.out.println("2. CHECK SEMUA COMMAND                     ");
         System.out.println("0. Keluar                                  ");
         System.out.println("===========================================");
 
@@ -31,7 +32,11 @@ void main() throws IOException, InvalidKeySpecException {
 
                 break;
             case "2":
-                checkCurrentPosition(robotRepository, robotService, scanner, path);
+                checkCurrentPosition(robotService, path);
+
+                break;
+            case "3":
+                checkAllCommand(robotService, path);
 
                 break;
             case "0":
@@ -46,7 +51,7 @@ void main() throws IOException, InvalidKeySpecException {
                 break;
             default:
                 System.out.println("Menu tidak tersedia!");
-                System.out.println("Silakan pilih menu 0-2.");
+                System.out.println("Silakan pilih menu 0-3.");
         }
     }
 
@@ -75,16 +80,28 @@ public static void commitMovement(RobotRepository robotRepository, RobotService 
 
 }
 
-        public static void checkCurrentPosition(RobotRepository robotRepository, RobotService robotService, Scanner scanner, Path path){
-            System.out.println("  =======================================");
-            System.out.println("              CHECK POSITION             ");
-            System.out.println("  =======================================");
-            try {
-                robotService.checkPosition(path);
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e){
-                System.out.println(e.getMessage());
-            }
+public static void checkCurrentPosition(RobotService robotService, Path path){
+    System.out.println("  =======================================");
+    System.out.println("              CHECK POSITION             ");
+    System.out.println("  =======================================");
+    try {
+        robotService.checkPosition(path);
+    } catch (IOException e) {
+        System.out.println(e.getMessage());
+    } catch (Exception e){
+        System.out.println(e.getMessage());
+    }
+}
 
-        }
+public static void checkAllCommand(RobotService robotService, Path path){
+    System.out.println("  =======================================");
+    System.out.println("              COMMAND HISTORY            ");
+    System.out.println("  =======================================");
+    try {
+        robotService.checkAllHistory(path);
+    } catch (IOException e) {
+        System.out.println(e.getMessage());
+    } catch (Exception e){
+        System.out.println(e.getMessage());
+    }
+}

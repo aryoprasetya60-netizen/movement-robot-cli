@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 import java.util.Objects;
 
 public class RobotServiceImpl implements RobotService {
@@ -95,6 +96,29 @@ public class RobotServiceImpl implements RobotService {
             System.out.printf("%s { %d , %d }\n", getDirection, getX, getY);
         } else {
             throw new IOException("File Doesn't Exist");
+        }
+    }
+
+    @Override
+    public void checkAllHistory(Path path) throws IOException {
+        List<Robot> robots = robotRepository.getAllHistory(path);
+        List<String> commands = robotRepository.getAllCommand(path);
+        if (robots.isEmpty()){
+            System.out.println("Data Command! tidak ada");
+            return;
+        }
+        if (path!=null){
+            System.out.println("=============================================================================");
+            System.out.println("||\tCommand\t\t||\tArah Robot \t||\t Koordinat X \t||\t Koordinat Y \t||");
+            System.out.println("=============================================================================");
+            for (int i=0;i<commands.size();i++){
+                if (i==0){
+                    System.out.println("||\t"+commands.get(i)+"\t||\t"+robots.get(i).getDirection()+"\t\t||\t\t"+robots.get(i).getX()+"\t\t\t||\t\t"+robots.get(i).getY()+"\t\t\t||");
+                } else {
+                    System.out.println("||\t"+commands.get(i)+"\t\t\t||\t"+robots.get(i).getDirection()+"\t\t||\t\t"+robots.get(i).getX()+"\t\t\t||\t\t"+robots.get(i).getY()+"\t\t\t||");
+                }
+            }
+            System.out.println("==========================================================");
         }
     }
 }
