@@ -107,11 +107,12 @@ public class RobotRepositoryImpl implements RobotRepository {
     }
 
     @Override
-    public void resetRobot(Path path) throws IOException {
+    public boolean resetRobot(Path path) throws IOException {
         if (Files.exists(path)){
             Files.delete(path);
+            return true;
         } else {
-            throw new IOException("Files doesn't exist");
+            return false;
         }
     }
 

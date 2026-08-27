@@ -131,7 +131,10 @@ public class RobotServiceImpl implements RobotService {
     @Override
     public void resetRobot(Path path) throws IOException {
         if (path!=null){
-            robotRepository.resetRobot(path);
+            boolean cekRobot = robotRepository.resetRobot(path);
+            if (!cekRobot){
+                throw new IOException("File doesn't exist");
+            }
             System.out.println("========= ROBOT BERHASIL DIRESET =========");
         } else {
             throw new NullPointerException("Path Tidak Boleh Kosong");
