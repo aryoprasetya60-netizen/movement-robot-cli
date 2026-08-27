@@ -35,14 +35,17 @@ public class RobotRepositoryImpl implements RobotRepository {
 
     @Override
     public String setNowPosition(Path path, Robot robot) throws IOException {
-        String nowPosition;
-        List<String> commitList = Files.readAllLines(path);
-        int lastLine = commitList.size()-1;
-        String[] parts = commitList.get(lastLine).split(",");
-        if (parts[0].trim()!="" && parts[1].trim()!=""){
-            nowPosition = parts[0].trim()+","+parts[1].trim()+","+parts[2].trim();
-        } else {
-            return null;
+        String nowPosition = null;
+        if (path != null && Files.exists(path)) {
+            List<String> commitList = Files.readAllLines(path);
+            int lastLine = commitList.size() - 1;
+            String[] parts = commitList.get(lastLine).split(",");
+            if (parts[0].trim() != "" && parts[1].trim() != "") {
+                nowPosition = parts[0].trim() + "," + parts[1].trim() + "," + parts[2].trim();
+            }
+        }
+        else {
+            throw new IOException();
         }
         return nowPosition;
     }
