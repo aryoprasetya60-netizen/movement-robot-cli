@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RobotRepositoryImpl implements RobotRepository {
@@ -33,9 +32,16 @@ public class RobotRepositoryImpl implements RobotRepository {
         String direction = "NORTH";
         int getX = 0;
         int getY = 0;
-        if (path != null && Files.exists(path)) {
-            List<String> commitList = Files.readAllLines(path);
-            int lastLine = commitList.size() - 1;
+        if (!Files.exists(path)) {
+            Files.createFile(path);
+            String initialCoordinate =
+                    String.format("INITIATE -> {%s, %d, %d}",direction,getX,getY);
+            Files.writeString(path, initialCoordinate + System.lineSeparator(), StandardOpenOption.CREATE);
+        }
+
+        List<String> commitList = Files.readAllLines(path);
+        int lastLine = commitList.size() - 1;
+        if (path != null) {
             String initialCoordinate = commitList.get(lastLine);
             String data = initialCoordinate.substring(
                     initialCoordinate.indexOf("{")+1,
@@ -47,8 +53,7 @@ public class RobotRepositoryImpl implements RobotRepository {
                 getX = Integer.parseInt(parts[1].trim());
                 getY = Integer.parseInt(parts[2].trim());
             }
-        }
-        else {
+        } else {
             throw new IOException();
         }
         Robot nowPosition = new Robot(direction,getX,getY);

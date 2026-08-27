@@ -5,6 +5,8 @@ import repository.RobotRepository;
 import service.RobotService;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Objects;
@@ -17,23 +19,17 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public void ChangePosition(Path path, String commit) throws IOException, InvalidKeySpecException {
+    public void changePosition(Path path, String commit) throws IOException, InvalidKeySpecException {
         //validasi commit
         String[] initiateDirection = {"NORTH","EAST","SOUTH","WEST"};
-        String getDirection = "NORTH";
-        int getX = 0;
-        int getY = 0;
+        String getDirection;
+        int getX;
+        int getY;
         Robot dataRobot1 = robotRepository.getNowPosition(path);
 
-            getDirection = dataRobot1.getDirection();
-            System.out.println("Arah robot: "+getDirection);
-
-            getX = dataRobot1.getX();
-            System.out.println("Arah X: "+getX);
-
-            getY = dataRobot1.getY();
-            System.out.println("Arah Y: "+getY);
-
+        getDirection = dataRobot1.getDirection();
+        getX = dataRobot1.getX();
+        getY = dataRobot1.getY();
 
         switch (commit){
             case "A":
@@ -43,7 +39,6 @@ public class RobotServiceImpl implements RobotService {
                     getY -= 1;
                 } else if (getDirection.equals("EAST")) {
                     getX += 1;
-                    System.out.println(getX);
                 } else if (getDirection.equals("WEST")) {
                     getX -= 1;
                 }
@@ -72,11 +67,34 @@ public class RobotServiceImpl implements RobotService {
                     }
                 }
                 break;
+            case "0":
+                System.out.println("=========== COMMAND DIBATALKAN ===========");
+                return;
             default:
                 throw new InvalidKeySpecException("Input Salah!(R, L, A)");
         }
-        System.out.println("Get X:"+getX);
         Robot newRobot = new Robot(getDirection,getX,getY);
         robotRepository.changeDirection(path, commit, newRobot);
+        System.out.printf("%s -> {%s, %d, %d}\n",commit, getDirection, getX, getY);
+        System.out.println("=========== COMMIT BERHASIL! ===========");
+    }
+
+    @Override
+    public void checkPosition(Path path) throws IOException {
+
+        Robot dataRobot1 = robotRepository.getNowPosition(path);
+        if (Files.exists(path)) {
+            String getDirection = dataRobot1.getDirection();
+            System.out.println("Arah robot: " + getDirection);
+
+            int getX = dataRobot1.getX();
+            System.out.println("Arah X: " + getX);
+
+            int getY = dataRobot1.getY();
+            System.out.println("Arah Y: " + getY);
+            System.out.printf("%s { %d , %d }\n", getDirection, getX, getY);
+        } else {
+            throw new IOException("File Doesn't Exist");
+        }
     }
 }

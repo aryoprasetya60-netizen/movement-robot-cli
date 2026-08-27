@@ -7,5 +7,6 @@ import java.nio.file.Path;
 import java.security.spec.InvalidKeySpecException;
 
 public interface RobotService {
-    void ChangePosition(Path path, String commit) throws IOException, InvalidKeySpecException;
+    void changePosition(Path path, String commit) throws IOException, InvalidKeySpecException;
+    void checkPosition(Path path) throws IOException;
 }
