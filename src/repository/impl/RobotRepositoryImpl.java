@@ -17,10 +17,7 @@ public class RobotRepositoryImpl implements RobotRepository {
         if (!Files.exists(path)) {
             Files.createFile(path);
             String initialCoordinate =
-                    String.format("{%s, %d, %d}",
-                            robot.getDirection(),
-                            robot.getX(),
-                            robot.getY());
+                    String.format("Commit -> {Arah, X, Y}");
             Files.writeString(path, initialCoordinate + System.lineSeparator(), StandardOpenOption.CREATE);
         }
         String changeCoordinate = String.format("%s -> {%s, %d, %d}",
@@ -29,17 +26,20 @@ public class RobotRepositoryImpl implements RobotRepository {
                 robot.getX(),
                 robot.getY());
         Files.writeString(path, changeCoordinate + System.lineSeparator(), StandardOpenOption.APPEND);
-
-        setNowPosition(path, robot);
     }
 
     @Override
-    public String setNowPosition(Path path, Robot robot) throws IOException {
+    public String getNowPosition(Path path) throws IOException {
         String nowPosition = null;
         if (path != null && Files.exists(path)) {
             List<String> commitList = Files.readAllLines(path);
             int lastLine = commitList.size() - 1;
-            String[] parts = commitList.get(lastLine).split(",");
+            String initialCoordinate = commitList.get(lastLine);
+            String data = initialCoordinate.substring(
+                    initialCoordinate.indexOf("{")+1,
+                    initialCoordinate.indexOf("}")
+            );
+            String[] parts = data.split(", ");
             if (parts[0].trim() != "" && parts[1].trim() != "") {
                 nowPosition = parts[0].trim() + "," + parts[1].trim() + "," + parts[2].trim();
             }

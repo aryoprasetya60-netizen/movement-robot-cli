@@ -1,0 +1,8 @@
+Commit -> {Arah, X, Y}
+A -> {EAST, 0, 0}
+A -> {EAST, 0, 0}
+A -> {EAST, 0, 0}
+A -> {EAST, 0, 0}
+A -> {EAST, 0, 0}
+A -> {EAST, 0, 0}
+A -> {EAST, 0, 0}
