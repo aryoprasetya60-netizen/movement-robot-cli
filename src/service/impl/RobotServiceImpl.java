@@ -145,6 +145,7 @@ public class RobotServiceImpl implements RobotService {
         switch (robot.getDirection()){
             case "SOUTH", "WEST", "EAST","NORTH":
                 robotRepository.createDirectory(path,robot);
+                System.out.println("========= ROBOT BERHASIL DI INISIASI =========");
                 break;
             default:
                 throw new InvalidKeySpecException("Input Salah!(SOUTH, WEST, EAST,NORTH");

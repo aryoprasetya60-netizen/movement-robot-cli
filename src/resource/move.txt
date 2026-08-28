@@ -1,0 +1,2 @@
+Commit -> {Arah, X, Y}
+INITIATE -> {EAST, 4, -3}
