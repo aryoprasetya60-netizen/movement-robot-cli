@@ -11,4 +11,5 @@ public interface RobotService {
     void checkPosition(Path path) throws IOException;
     void checkAllHistory(Path path) throws IOException;
     void resetRobot(Path path) throws IOException;
+    void createNewDirectory(Path path, Robot robot) throws IOException, InvalidKeySpecException;
 }

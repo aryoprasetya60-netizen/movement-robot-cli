@@ -136,4 +136,18 @@ public class RobotServiceImpl implements RobotService {
             throw new NullPointerException("Path Tidak Boleh Kosong");
         }
     }
+
+    @Override
+    public void createNewDirectory(Path path, Robot robot) throws IOException, InvalidKeySpecException {
+        if (path==null){
+            throw new IOException("Path Tidak Boleh Kosong");
+        }
+        switch (robot.getDirection()){
+            case "SOUTH", "WEST", "EAST","NORTH":
+                robotRepository.createDirectory(path,robot);
+                break;
+            default:
+                throw new InvalidKeySpecException("Input Salah!(SOUTH, WEST, EAST,NORTH");
+        }
+    }
 }

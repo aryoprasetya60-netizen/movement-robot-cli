@@ -31,7 +31,6 @@ void main() throws IOException, InvalidKeySpecException {
         switch (menu) {
             case "1":
                 commitMovement(robotRepository, robotService, scanner, path);
-
                 break;
             case "2":
                 checkCurrentPosition(robotService, path);
@@ -64,25 +63,47 @@ void main() throws IOException, InvalidKeySpecException {
     scanner.close();
 
 }
-public static void commitMovement(RobotRepository robotRepository, RobotService robotService, Scanner scanner, Path path){
+public static void commitMovement(RobotRepository robotRepository, RobotService robotService, Scanner scanner, Path path) throws IOException, InvalidKeySpecException {
     System.out.println("  =======================================");
     System.out.println("              COMMMAND ROBOT             ");
     System.out.println("  =======================================");
-    System.out.print("A = Maju 1 Langkah \n");
-    System.out.print("L = Hadap Kiri \n");
-    System.out.print("R = Hadap Kanan \n");
-    System.out.print("0 = Batal \n");
-    System.out.print("Masukkan Commands: ");
-    String command = scanner.nextLine();
-    if (command!="0") {
+    if (robotRepository.getNowPosition(path)==null){
+        System.out.println("ROBOT MASIH KOSONG!!");
+        System.out.println("MASUKKAN INISIASI POSISI ROBOT!");
+        System.out.print("Input Direction(NORTH,SOUTH,EAST,WEST):");
+        String direction = scanner.nextLine();
+        System.out.print("Input Position X:");
+        int initiateX = scanner.nextInt();
+        System.out.print("Input Position Y:");
+        int initiateY = scanner.nextInt();
+        scanner.nextLine();
         try {
-            robotService.changePosition(path, command.toUpperCase());
-        } catch (NullPointerException e) {
+            Robot newRobot = new Robot(direction.toUpperCase(), initiateX, initiateY);
+            robotService.createNewDirectory(path, newRobot);
+        } catch (IOException e){
             System.out.println(e.getMessage());
-        }catch (IOException e) {
+        } catch (InvalidKeySpecException e){
             System.out.println(e.getMessage());
-        } catch (InvalidKeySpecException e) {
+        } catch (Exception e){
             System.out.println(e.getMessage());
+        }
+    } else {
+        System.out.print("A = Maju 1 Langkah \n");
+        System.out.print("L = Hadap Kiri \n");
+        System.out.print("R = Hadap Kanan \n");
+        System.out.print("0 = Batal \n");
+        System.out.print("Masukkan Commands: ");
+        String command = scanner.nextLine();
+        if (command != "0") {
+            try {
+                robotService.changePosition(path, command.toUpperCase());
+            } catch (NullPointerException e) {
+                System.out.println(e.getMessage());
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            } catch (InvalidKeySpecException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 

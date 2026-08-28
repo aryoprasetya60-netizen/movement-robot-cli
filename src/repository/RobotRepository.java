@@ -13,4 +13,5 @@ public interface RobotRepository {
     List<String> getAllCommand(Path path) throws IOException;
     Robot getNowPosition(Path path) throws IOException;
     boolean resetRobot(Path path) throws IOException;
+    void createDirectory(Path path, Robot robot) throws IOException;
 }

@@ -15,7 +15,7 @@ public class RobotRepositoryImpl implements RobotRepository {
     @Override
     public void changeDirection(Path path, String commit, Robot robot) throws IOException {
         if (!Files.exists(path)) {
-            createDirectory(path);
+            createDirectory(path,robot);
         }
         String changeCoordinate = String.format("%s -> {%s, %d, %d}",
                 commit,
@@ -84,7 +84,7 @@ public class RobotRepositoryImpl implements RobotRepository {
         int getX = 0;
         int getY = 0;
         if (!Files.exists(path)) {
-            createDirectory(path);
+            return null;
         }
 
         List<String> commitList = Files.readAllLines(path);
@@ -118,10 +118,15 @@ public class RobotRepositoryImpl implements RobotRepository {
         }
     }
 
-    public void createDirectory(Path path) throws IOException{
+    public void createDirectory(Path path, Robot robot) throws IOException{
         String direction = "NORTH";
         int getX = 0;
         int getY = 0;
+        if (robot!=null){
+            direction = robot.getDirection();
+            getX = robot.getX();
+            getY = robot.getY();
+        }
         Files.createFile(path);
         String headerCoordinate =
                 String.format("Commit -> {Arah, X, Y}");
