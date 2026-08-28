@@ -106,10 +106,6 @@ public class RobotServiceImpl implements RobotService {
     public void checkAllHistory(Path path) throws IOException {
         List<Robot> robots = robotRepository.getAllHistory(path);
         List<String> commands = robotRepository.getAllCommand(path);
-        if (robots.isEmpty()){
-            System.out.println("Data Command! tidak ada");
-            return;
-        }
         if (path!=null){
             int no=1;
             System.out.println("Total Commands: "+commands.size());

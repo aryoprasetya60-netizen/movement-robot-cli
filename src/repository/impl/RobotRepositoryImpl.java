@@ -28,7 +28,9 @@ public class RobotRepositoryImpl implements RobotRepository {
     @Override
     public List<Robot> getAllHistory(Path path) throws IOException {
         List<Robot> robots = new ArrayList<>();
-
+        if (!Files.exists(path)){
+            throw new IOException("Files doesn't exist");
+        }
         if (path != null && Files.exists(path)) {
             List<String> historyList = Files.readAllLines(path);
 
