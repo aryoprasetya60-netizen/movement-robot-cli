@@ -1,0 +1,7 @@
+Commit -> {Arah, X, Y}
+INITIATE -> {NORTH, 0, 0}
+A -> {NORTH, 0, 1}
+L -> {WEST, 0, 1}
+L -> {SOUTH, 0, 1}
+A -> {SOUTH, 0, 0}
+A -> {SOUTH, 0, -1}
